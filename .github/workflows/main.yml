@@ -2,16 +2,18 @@
 
 on: [push]
 
-name: AzureLoginSample
-
 jobs:
-
-  build-and-deploy:
-    runs-on: ubuntu-latest 
+  build:
+    runs-on: ubuntu-latest
     steps:
-    
-    - uses: azure/login@v1
+      # checkout the repo
+    - uses: actions/checkout@master
+    - uses: Azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-
+        creds: ${{ secrets.AZURE_CREDENTIALS }} 
+    - uses: Azure/get-keyvault-secrets@v1.0
+      with:
+        keyvault: "mynew"
+        secrets: 'secret1'  # comma separated list of secret keys that need to be fetched from the Key Vault 
+      id: myGetSecretAction
+        
